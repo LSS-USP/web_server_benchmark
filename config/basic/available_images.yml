@@ -1,0 +1,5 @@
+freebsd: 'freebsd/FreeBSD-10.3-STABLE'
+centos: 'centos/7'
+arch: 'bugyt/archlinux'
+ubuntu: 'minimal/trusty64'
+debian: 'minimal/jessie64'
