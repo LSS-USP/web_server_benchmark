@@ -19,10 +19,14 @@ Vagrant.configure('2') do |config|
   # Define vm configurations
   config.vm.define 'apache_httpd' do |httpd|
     httpd.vm.provider 'virtualbox' do |vm, override|
-      override.vm.network 'private_network', ip: '10.10.10.2'
       vm.memory = hw_config['memory']
       vm.cpus = hw_config['cpus']
     end
   end
+
+  ssh_path = "#{ENV['HOME']}/.ssh/id_rsa.pub"
+  id_pub = File.read(ssh_path)
+  config.vm.provision 'shell', keep_color: true, path: 'vagrant/bootstrap.sh'
+  config.vm.provision 'shell', privileged: true, keep_color: true, args: "#{ENV['USER']} #{id_pub}", path: 'vagrant/provision.sh'
 
 end
