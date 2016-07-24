@@ -51,3 +51,6 @@ build-iPhoneSimulator/
 
 # Vagrant configurations
 .vagrant/
+
+# Public key
+/vagrant/id_rsa.pub
