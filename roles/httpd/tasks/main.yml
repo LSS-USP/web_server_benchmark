@@ -1,0 +1,38 @@
+---
+- name: Install Apache Httpd
+  pacman: name=apache state=present
+
+- name: Enabling httpd
+  service: name=httpd enabled=yes
+
+- name: Starting httpd
+  service: name=httpd state=started
+  register: httpdstarted
+
+- name: Setting static files
+  when: httpdstarted|success
+  file: path=/srv/http/benchmark state=directory
+  register: createdbenchmark
+
+- name: Basic configuration of httpd
+  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^#ServerName" line="ServerName localhost" backrefs=yes
+
+- name: Enabling Virtual Host
+  when: createdbenchmark|success
+  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^#Include conf/extra/httpd-vhosts.conf" line="Include conf/extra/httpd-vhosts.conf" backrefs=yes
+  register: enabledvirtualhost
+
+- name: Setup Virtual Hosts
+  when: enabledvirtualhost|success
+  copy: src=files/virtual_hosts/httpd-vhosts.conf dest=/etc/httpd/conf/extra/httpd-vhosts.conf
+
+- name: Copy static content
+  when: createdbenchmark|success
+  copy: src={{ item }} dest=/srv/http/benchmark
+  with_fileglob:
+    - static_content/*
+  register: staticfiles
+
+- name: Restart httpd to capture the new configuration
+  when: staticfiles|success
+  service: name=httpd state=restarted

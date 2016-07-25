@@ -1,0 +1,55 @@
+body
+{
+  color: #3B3A36;
+  padding: 20px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #F6F6F6;
+}
+
+.half-vertical-content
+{
+  background: white;
+  position: relative;
+  width: 45%;
+  border-left: 1px solid;
+  border-color: #C5D5CB;
+  border-width: 2px;
+}
+
+.circle-corner 
+{
+  position: absolute;
+  border: 5px solid;
+  border-radius: 10px;
+  color: #07D200;
+}
+
+.top-to-left
+{
+  top: -0px;
+  left: -6px
+}
+
+h1
+{
+  margin: 3px;
+  text-transform: uppercase;
+}
+
+#date-left
+{
+  float: left;
+  margin-top: -30px;
+  transform: rotate(90deg);
+  transform-origin: left top 0;
+}
+
+p
+{
+  text-align: left;
+}
+
+li
+{
+  list-style-image: url('plus.png');
+}
