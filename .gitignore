@@ -54,3 +54,6 @@ build-iPhoneSimulator/
 
 # Public key
 /vagrant/id_rsa.pub
+
+# Ansible
+*.retry

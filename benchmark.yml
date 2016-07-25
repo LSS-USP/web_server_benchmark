@@ -1,0 +1,8 @@
+---
+- name: Prepare the environment to run the benchmark
+  hosts: local
+  user: root
+  become: yes
+
+  roles:
+    - common

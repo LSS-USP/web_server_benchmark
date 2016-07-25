@@ -1,0 +1,6 @@
+---
+- name: Update package list
+  pacman: update_cache=yes
+
+- name: Install vim
+  pacman: name=vim state=present
