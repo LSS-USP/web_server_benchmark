@@ -1,2 +1,4 @@
-memory: 1024
-cpus: 2
+apache_web_server:
+  - {memory: 1024, cpus: 2}
+benchmark:
+  - {memory: 1024, cpus: 2}
