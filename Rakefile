@@ -14,14 +14,35 @@ namespace :vms do |args|
     if $AVAILABLES_VMS.has_key?(vm_to_create)
       target = $AVAILABLES_VMS[vm_to_create]
       system("VM=#{target} vagrant up --provider virtualbox")
-      exit 0
     else
       puts 'Not available vm'
       exit 0
     end
   end
+
+  desc 'Start vms, and configure it'
+  task :deploy => 'vms:start'  do
+    system('ansible-playbook -i hosts benchmark.yml')
+    exit 0
+  end
+
+  desc 'Execute benchmark'
+  task :runbenchmark do
+    system('./scripts/stress_test.sh event localhost/~siqueira')
+    exit 0
+  end
 end
 
-namespace :benckmark do
+namespace :benchmark do
+  desc 'Based on tsv files, generate graphs'
+  task :generate_graphs do
+    system('./scripts/generate_graphs.sh')
+    exit 0
+  end
+end
 
+desc 'Clean results'
+task :clean do
+  system('rm results/*')
+  exit 0
 end
