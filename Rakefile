@@ -13,7 +13,7 @@ namespace :vms do |args|
   desc 'Start vms, and configure it'
   task :deploy do
     wake_up_vms
-    system('ansible-playbook -i hosts benchmark.yml')
+    system('ansible-playbook -i hosts.local benchmark.yml')
     exit 0
   end
 
@@ -39,6 +39,24 @@ namespace :vms do |args|
     system("vagrant halt #{machines_names[1]}")
     system("vagrant halt #{machines_names[0]}")
   end
+
+  desc 'Destroy all vms'
+  task :destroyall do
+    vm_define = 'config/basic/vm_define.yml'
+    # Before work
+    if File.exists?(vm_define)
+      row_file = YAML.load_file(vm_define)
+      machines_names = row_file.keys
+      hw_httpd = row_file[machines_names[0]][0]
+      hw_request = row_file[machines_names[1]][0]
+    else
+      puts 'Cannot load file'
+      exit 0
+    end
+    system("vagrant destroy #{machines_names[1]}")
+    system("vagrant destroy #{machines_names[0]}")
+  end
+
 
   desc 'Login into the machine'
   task :login do

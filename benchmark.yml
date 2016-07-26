@@ -1,9 +1,15 @@
 ---
-- name: Prepare the environment to run the benchmark
-  hosts: local
+- name: Environment with httpd
+  hosts: httpd_host
   user: root
   become: yes
-
   roles:
     - common
     - httpd
+
+- name: Environment with the benchmark
+  hosts: benchmark_host
+  user: root
+  become: yes
+  roles:
+    - benchmark

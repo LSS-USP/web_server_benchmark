@@ -43,7 +43,7 @@ Vagrant.configure('2') do |config|
       vm.cpus = hw_request['cpus']
     end
     requests.vm.network 'public_network', ip: "10.0.0.201"
-	  requests.vm.network 'forwarded_port', guest: 80, host: 1234
+    requests.vm.network 'forwarded_port', guest: 80, host: 1234
     requests.vm.provision 'shell', privileged: true, keep_color: true, args: "#{ENV['USER']}", path: 'vagrant/bootstrap.sh'
   end
 
