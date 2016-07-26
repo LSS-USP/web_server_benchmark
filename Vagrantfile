@@ -22,7 +22,7 @@ Vagrant.configure('2') do |config|
 
   # Define to run apache settings
   config.vm.define machines_names[0] do |httpd|
-    httpd.vm.box = ENV['VM']
+    httpd.vm.box = ENV['VM'] || 'bugyt/archlinux'
 	  httpd.vm.network 'forwarded_port', guest: 80, host: 8080
 
     httpd.vm.provider 'virtualbox' do |vm, override|
