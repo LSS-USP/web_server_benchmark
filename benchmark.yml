@@ -1,6 +1,6 @@
 ---
 - name: Environment with httpd
-  hosts: httpd_host
+  hosts: apache_web_server
   user: root
   become: yes
   roles:
@@ -9,7 +9,7 @@
     - static_content
 
 - name: Environment with the benchmark
-  hosts: benchmark_host
+  hosts: benchmark
   user: root
   become: yes
   roles:
