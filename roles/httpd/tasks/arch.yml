@@ -24,6 +24,11 @@
 
 - name: Setup Virtual Hosts
   when: enabledvirtualhost|success
+  register: createvhost
+  template:
+    src: templates/httpd-vhosts.conf.j2
+    dest: /etc/httpd/conf/extra/httpd-vhosts.conf
+  with_items: "{{ arch_log_dir }}"
 
 - name: Restart httpd to capture the new configuration
   service: name=httpd state=restarted

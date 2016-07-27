@@ -1,0 +1,5 @@
+---
+debian_log_dir:
+  - '${APACHE_LOG_DIR}/benchmark-lss.com-error_log'
+arch_log_dir:
+  - '/var/log/httpd/benchmark-lss.com-error_log'

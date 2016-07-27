@@ -17,8 +17,11 @@
 
 - name: Setup Virtual Hosts
   when: createdbenchmark|success
-  copy: src=files/virtual_hosts/httpd-vhosts.conf dest=/etc/apache2/sites-available/benchmark-lss.com.conf
   register: createvhost
+  template:
+    src: templates/httpd-vhosts.conf.j2
+    dest: /etc/apache2/sites-available/benchmark-lss.com.conf
+  with_items: "{{ debian_log_dir }}"
 
 - name: Enabling Virtual Host
   when: createvhost|success
