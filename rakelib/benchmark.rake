@@ -7,14 +7,13 @@ namespace :benchmark do
 
   desc 'Start bench'
   task :run do
-    verify_argv(' -> provide the environment')
-
-    vm_define = "config/#{ARGV[1]}/basic/machine_define.yml"
-    hw_request, hw_httpd, machines_names = get_configuration_from
+    vm_define = "config/#{$BENCH_ENV}/basic/machine_define.yml"
+    hw_httpd, hw_request, machines_names = get_configuration_from
     port = hw_request['port']
     host = hw_request['host']
     command = "ssh #{ENV['USER']}@#{host} -p #{port} "
     command += "'bash -s' < scripts/stress_test.sh event http://192.168.33.49:8080/"
+
     system(command)
 
     last_collected = Time.now.strftime("%d-%m-%Y_%H-%M")
