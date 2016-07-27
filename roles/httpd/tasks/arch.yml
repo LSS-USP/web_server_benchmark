@@ -24,15 +24,6 @@
 
 - name: Setup Virtual Hosts
   when: enabledvirtualhost|success
-  copy: src=files/virtual_hosts/httpd-vhosts.conf dest=/etc/httpd/conf/extra/httpd-vhosts.conf
-
-- name: Copy static content
-  when: createdbenchmark|success
-  copy: src={{ item }} dest=/srv/http/benchmark
-  with_fileglob:
-    - static_content/*
-  register: staticfiles
 
 - name: Restart httpd to capture the new configuration
-  when: staticfiles|success
   service: name=httpd state=restarted

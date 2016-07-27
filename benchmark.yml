@@ -6,6 +6,7 @@
   roles:
     - common
     - httpd
+    - static_content
 
 - name: Environment with the benchmark
   hosts: benchmark_host

@@ -30,13 +30,5 @@
   shell: a2dissite 000-default.conf
   register: disabledvirtualhost
 
-- name: Copy static content
-  when: createdbenchmark|success
-  copy: src={{ item }} dest=/srv/http/benchmark
-  with_fileglob:
-    - static_content/*
-  register: staticfiles
-
 - name: Restart apache2 to capture the new configuration
-  when: staticfiles|success
   service: name=apache2 state=restarted
