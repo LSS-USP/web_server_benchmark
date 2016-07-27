@@ -29,9 +29,4 @@ namespace :benchmark do
     exit 0
   end
 
-  desc 'Based on tsv files, generate graphs'
-  task :graphs do
-    system('./scripts/generate_graphs.sh')
-    exit 0
-  end
 end
