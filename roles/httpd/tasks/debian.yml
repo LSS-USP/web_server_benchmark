@@ -1,0 +1,42 @@
+---
+
+- name: Install apache2
+  apt: name=apache2 update_cache=yes state=latest cache_valid_time=3600
+
+- name: Enabling and start apache2
+  service: name=apache2 enabled=yes state=started
+  register: apache2started
+
+- name: Setting static files
+  when: apache2started|success
+  file: path=/srv/http/benchmark state=directory mode=0755
+  register: createdbenchmark
+
+- name: Basic configuration of apache2
+  lineinfile: dest=/etc/apache2/apache2.conf line="ServerName localhost"
+
+- name: Setup Virtual Hosts
+  when: createdbenchmark|success
+  copy: src=files/virtual_hosts/httpd-vhosts.conf dest=/etc/apache2/sites-available/benchmark-lss.com.conf
+  register: createvhost
+
+- name: Enabling Virtual Host
+  when: createvhost|success
+  shell: a2ensite benchmark-lss.com.conf
+  register: enabledvirtualhost
+
+- name: Disabling Default Virtual Host
+  when: enabledvirtualhost|success
+  shell: a2dissite 000-default.conf
+  register: disabledvirtualhost
+
+- name: Copy static content
+  when: createdbenchmark|success
+  copy: src={{ item }} dest=/srv/http/benchmark
+  with_fileglob:
+    - static_content/*
+  register: staticfiles
+
+- name: Restart apache2 to capture the new configuration
+  when: staticfiles|success
+  service: name=apache2 state=restarted
