@@ -1,8 +1,8 @@
 ---
-- apt: update_cache=yes cache_valid_time=3600
+- package: update_cache=yes
 
 - name: Install Apache utils
-  apt: name=apache2-utils
+  package: name=apache2-utils
 
 - name: Create user to execute scripts
   user: name=bandmaster shell=/bin/bash
