@@ -31,26 +31,4 @@ namespace :vms do |args|
     end
   end
 
-  desc 'Login into the machine'
-  task :login do
-    vm_define = 'config/vms/basic/machine_define.yml'
-    if File.exists?(vm_define)
-      row_file = YAML.load_file(vm_define)
-      machines_names = row_file.keys
-      hw_httpd = row_file[machines_names[0]][0]
-      hw_request = row_file[machines_names[1]][0]
-    else
-      puts 'Cannot load file'
-      exit 0
-    end
-    if ARGV.length <= 1
-      puts 'We need to know witch machine do you want to entry'
-      puts machines_names
-      exit 0
-    end
-    port = row_file[ARGV[1]][0]['port']
-    system("ssh #{ENV['USER']}@localhost -p #{port}")
-    exit 0
-  end
-
 end

@@ -36,6 +36,8 @@ module Common
         return machines_names
       when 'hardware'
         return hw_request, hw_httpd
+      when 'row'
+        return row_file
       else
         return hw_httpd, hw_request, machines_names
       end
