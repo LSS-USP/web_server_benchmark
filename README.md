@@ -26,18 +26,18 @@ inside the /vagrant folder.
 cp ~/.ssh/id_rsa.pub /vagrant
 ```
 
-> The next step, it is turn on the virtual machine. Just type:
+> The next step, it is turn on the virtual machine and prepare it to execute
+the benchmark. Just type:
 
 ```
-rake vms:start arch
+rake vms:deploy arch
 ```
 
 ## Deploy the benchmark
 
 > After you did the basic setup (a machine or virtual machine), it is time to
-configure your host:
-
+execute the benchmark:
 
 ```
-ansible-playbook -i hosts benchmark.yml
+rake benchmark:run vms
 ```

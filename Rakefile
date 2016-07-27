@@ -1,6 +1,6 @@
 require 'yaml'
 
-$AVAILABLES_VMS = YAML.load_file('config/basic/available_images.yml')
+$AVAILABLES_VMS = YAML.load_file('config/vms/basic/available_images.yml')
 
 namespace :vms do |args|
 
@@ -17,15 +17,9 @@ namespace :vms do |args|
     exit 0
   end
 
-  desc 'Execute benchmark'
-  task :runbenchmark do
-    system('./scripts/stress_test.sh event localhost/~siqueira')
-    exit 0
-  end
-
   desc 'Halt all vms'
   task :haltall do
-    vm_define = 'config/basic/vm_define.yml'
+    vm_define = 'config/vms/basic/machine_define.yml'
     # Before work
     if File.exists?(vm_define)
       row_file = YAML.load_file(vm_define)
@@ -42,7 +36,7 @@ namespace :vms do |args|
 
   desc 'Destroy all vms'
   task :destroyall do
-    vm_define = 'config/basic/vm_define.yml'
+    vm_define = 'config/vms/basic/machine_define.yml'
     # Before work
     if File.exists?(vm_define)
       row_file = YAML.load_file(vm_define)
@@ -60,10 +54,12 @@ namespace :vms do |args|
 
   desc 'Login into the machine'
   task :login do
-    vm_define = 'config/basic/vm_define.yml'
+    vm_define = 'config/vms/basic/machine_define.yml'
     if File.exists?(vm_define)
       row_file = YAML.load_file(vm_define)
       machines_names = row_file.keys
+      hw_httpd = row_file[machines_names[0]][0]
+      hw_request = row_file[machines_names[1]][0]
     else
       puts 'Cannot load file'
       exit 0
@@ -73,8 +69,8 @@ namespace :vms do |args|
       puts machines_names
       exit 0
     end
-
-    system("ssh #{ENV['USER']}@localhost -p 2222")
+    port = row_file[ARGV[1]][0]['port']
+    system("ssh #{ENV['USER']}@localhost -p #{port}")
     exit 0
   end
 
@@ -98,8 +94,41 @@ namespace :vms do |args|
 end
 
 namespace :benchmark do
+  desc 'Start bench'
+  task :run do
+    if ARGV.length <= 1
+      puts 'Wrong number of arguments, you should provide the environment'
+      exit 0
+    end
+    vm_define = "config/#{ARGV[1]}/basic/machine_define.yml"
+    if File.exists?(vm_define)
+      row_file = YAML.load_file(vm_define)
+      machines_names = row_file.keys
+      hw_request = row_file[machines_names[1]][0]
+    else
+      puts 'Cannot load file'
+      exit 0
+    end
+    port = hw_request['port']
+    host = hw_request['host']
+    command = "ssh #{ENV['USER']}@#{host} -p #{port} "
+    command += "'bash -s' < scripts/stress_test.sh event http://192.168.33.49:8080/"
+    system(command)
+
+    last_collected = Time.now.strftime("%d-%m-%Y_%H-%M")
+    last_collected = "results/#{last_collected}_data"
+    system("mkdir #{last_collected}")
+
+    command = "scp -rp -P #{port} #{ENV['USER']}@#{host}:"
+    command += "/home/siqueira/results/* #{last_collected}"
+
+    system(command)
+
+    exit 0
+  end
+
   desc 'Based on tsv files, generate graphs'
-  task :generate_graphs do
+  task :graphs do
     system('./scripts/generate_graphs.sh')
     exit 0
   end

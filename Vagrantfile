@@ -4,7 +4,7 @@
 require 'yaml'
 
 Vagrant.configure('2') do |config|
-  vm_define = 'config/basic/vm_define.yml'
+  vm_define = 'config/vms/basic/machine_define.yml'
   # Before work
   if File.exists?(vm_define)
     row_file = YAML.load_file(vm_define)
