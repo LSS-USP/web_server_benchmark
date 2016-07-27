@@ -7,9 +7,15 @@ namespace :vms do |args|
 
   include Common
 
-  desc 'Start a virtual machine, all possibility available in config'
-  task :start do
+  desc 'Start all virtual machines'
+  task :wakeup do
     wake_up_vms
+    exit 0
+  end
+
+  desc 'Configure all machines'
+  task :configure do
+    configure_vms
     exit 0
   end
 

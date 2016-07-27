@@ -7,7 +7,7 @@ module Common
     end
   end
 
-  def wake_up_vms
+  def configure_vms
     verify_argv('-> provide the OS name')
 
     vm_to_create = ARGV[1]
@@ -19,6 +19,10 @@ module Common
       puts 'Not available vm'
       exit 0
     end
+  end
+
+  def wake_up_vms
+    system("vagrant up --provider virtualbox")
   end
 
   # Read from configuration
