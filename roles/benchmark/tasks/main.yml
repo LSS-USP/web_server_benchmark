@@ -10,12 +10,12 @@
 
 - name: Create folder to keeps the benchmark scripts
   when: usercreated|success
-  file: path=/home/bandmaster/scripts state=directory
+  file: path=/home/bandmaster/scripts state=directory owner=bandmaster
   register: setupfolder
 
 - name: Copy benchmark script
   when: setupfolder|success
-  copy: src={{ item }} dest=/home/bandmaster/scripts
+  copy: src={{ item }} dest=/home/bandmaster/scripts owner=bandmaster mode=0755
   with_fileglob:
     - scripts/*
   register: copiedscripts
