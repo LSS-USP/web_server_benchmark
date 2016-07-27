@@ -1,10 +1,14 @@
 module Common
 
-  def wake_up_vms
-    if ARGV.length <= 1
-      puts 'Wrong number or argument: provide the OS name'
+  def verify_argv(message='', num=1)
+    if ARGV.length <= num
+      puts "Wrong number or argument #{message}"
       exit 0
     end
+  end
+
+  def wake_up_vms
+    verify_argv('-> provide the OS name')
 
     vm_to_create = ARGV[1]
 
@@ -20,7 +24,7 @@ module Common
   # Read from configuration
   # @param What you want from current environment
   def get_configuration_from(specific='all')
-    vm_define = 'config/vms/basic/machine_define.yml'
+    vm_define = "config/#{$BENCH_ENV}/basic/machine_define.yml"
     # Before work
     if File.exists?(vm_define)
       row_file = YAML.load_file(vm_define)
