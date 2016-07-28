@@ -8,22 +8,40 @@ namespace :benchmark do
   desc 'Start bench'
   task :run do
     vm_define = "config/#{$BENCH_ENV}/basic/machine_define.yml"
-    hw_httpd, hw_request, machines_names = get_configuration_from
-    port = hw_request['port']
-    host = hw_request['host']
-    command = "ssh #{ENV['USER']}@#{host} -p #{port} "
-    command += "'bash -s' < scripts/stress_test.sh event http://192.168.33.49:8080/"
 
-    system(command)
+    # XXX: Please, rewrite it.
+    puts('=' * 30)
+    puts ('>>>> EVENT')
+    system("ansible-playbook -i #{$BENCH_ENV} enable_event.yml")
+    system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml")
 
     last_collected = Time.now.strftime("%d-%m-%Y_%H-%M")
     last_collected = "results/#{last_collected}_data"
-    system("mkdir #{last_collected}")
 
-    command = "scp -rp -P #{port} #{ENV['USER']}@#{host}:"
-    command += "/home/siqueira/results/* #{last_collected}"
+    event = "#{last_collected}/event"
+    system("mkdir -p #{event}")
+    system("cp /tmp/fetched/benchmark/srv/scripts/results/* #{event}")
+    system("rm -rf /tmp/fetched")
 
-    system(command)
+    puts('=' * 30)
+    puts ('>>>> WORKER')
+    system("ansible-playbook -i #{$BENCH_ENV} enable_worker.yml")
+    system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml")
+
+    worker = "#{last_collected}/worker"
+    system("mkdir -p #{worker}")
+    system("cp /tmp/fetched/benchmark/srv/scripts/results/* #{worker}")
+    system("rm -rf /tmp/fetched")
+
+    puts('=' * 30)
+    puts ('>>>> PREFORK')
+    system("ansible-playbook -i #{$BENCH_ENV} enable_prefork.yml")
+    system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml")
+
+    prefork = "#{last_collected}/prefork"
+    system("mkdir -p #{prefork}")
+    system("cp /tmp/fetched/benchmark/srv/scripts/results/* #{prefork}")
+    system("rm -rf /tmp/fetched")
 
     exit 0
   end

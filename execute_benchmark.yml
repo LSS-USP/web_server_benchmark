@@ -1,11 +1,4 @@
 ---
-- name: Change mpm strategy
-  host: apache_web_server
-  user: root
-  become: yes
-  roles:
-    - mpm_manipulador
-
 - name: Stress the httpd
   hosts: benchmark
   user: root
