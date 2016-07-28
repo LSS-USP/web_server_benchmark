@@ -4,18 +4,17 @@
 - name: Install Apache utils
   package: name=apache2-utils
 
-- name: Create user to execute scripts
-  user: name=bandmaster shell=/bin/bash
-  register: usercreated
-
 - name: Create folder to keeps the benchmark scripts
-  when: usercreated|success
-  file: path=/home/bandmaster/scripts state=directory owner=bandmaster
+  file: path=/srv/scripts state=directory
   register: setupfolder
 
 - name: Copy benchmark script
   when: setupfolder|success
-  copy: src={{ item }} dest=/home/bandmaster/scripts owner=bandmaster mode=0755
+  copy: src={{ item }} dest=/srv/scripts mode=0755
   with_fileglob:
     - scripts/*
   register: copiedscripts
+
+- name: Setup results folder
+  when: copiedscripts|success
+  file: path=/srv/scripts/results state=directory mode=0755
