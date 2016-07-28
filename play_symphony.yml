@@ -1,0 +1,7 @@
+---
+- name: Play symphony
+  hosts: benchmark
+  user: root
+  become: yes
+  roles:
+    - symphony_benchmark

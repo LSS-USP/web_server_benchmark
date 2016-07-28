@@ -1,0 +1,16 @@
+---
+- name: Execute ab benchmark script (it can take a few minutes)
+  shell: /srv/scripts/stress_test.sh  'event'  'http://192.168.33.49:8080/'
+  args:
+    executable: /bin/bash
+  register: executebenchmark
+
+- name: Get the name of all files generated after having ran the benchmark
+  when: executebenchmark|success
+  shell: (cd /srv/scripts/results; find . -maxdepth 1 -type f) | cut -d'/' -f2
+  register: file_to_copy
+
+- name: Copy results from benchmark
+  when: file_to_copy|success
+  fetch: src=/srv/scripts/results/{{ item }} dest=/tmp/fetched fail_on_missing=yes
+  with_items: "{{ file_to_copy.stdout_lines }}"
