@@ -1,0 +1,19 @@
+---
+# XXX: Please!!! Refactoring!!! I'm similar to the other mpms. 
+- name: Turn off apache
+  service: name=apache2 state=stopped
+  register: apache2stopped
+
+- name: Turn off current mpm module
+  when: apache2stopped|success
+  shell: a2dismod mpm_*
+  register: disabledevent
+
+- name: Enable event module
+  when: disabledevent|success
+  shell: a2enmod mpm_event
+  register: enabledevent
+
+- name: Started apache again
+  when: enabledevent|success
+  service: name=apache2 state=started
