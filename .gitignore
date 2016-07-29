@@ -62,3 +62,4 @@ build-iPhoneSimulator/
 *.p
 *.tsv
 *.png
+local.rake

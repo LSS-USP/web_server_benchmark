@@ -8,7 +8,8 @@ task :login do
   err = "Please, inform a machine name:\n\t#{row.keys.join("\n\t")}"
   verify_argv(err)
   port = row[ARGV[1]][0]['port']
-  system("ssh #{ENV['USER']}@localhost -p #{port}")
+  host = row[ARGV[1]][0]['host']
+  system("ssh #{ENV['USER']}@#{host} -p #{port}")
   exit 0
 end
 
