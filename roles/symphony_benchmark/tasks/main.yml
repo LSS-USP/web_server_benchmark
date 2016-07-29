@@ -1,6 +1,6 @@
 ---
 - name: Execute ab benchmark script (it can take a few minutes)
-  shell: /srv/scripts/stress_test.sh  'event'  'http://192.168.33.49:8080/'
+  shell: /srv/scripts/ab_stress_test.sh 'http://172.24.4.3/'
   args:
     executable: /bin/bash
   register: executebenchmark
