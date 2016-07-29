@@ -1,0 +1,4 @@
+apache_web_server:
+  - {memory: 4096, cpus: 4, port: 22, host: '172.17.0.105'}
+benchmark:
+  - {memory: 4096, cpus: 4, port: 22, host: '172.17.0.120'}
