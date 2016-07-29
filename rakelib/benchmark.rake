@@ -1,5 +1,6 @@
 require 'yaml'
 require_relative 'common_tasks'
+require 'fileutils'
 
 namespace :benchmark do
 
@@ -7,43 +8,28 @@ namespace :benchmark do
 
   desc 'Start bench'
   task :run do
-    vm_define = "config/#{$BENCH_ENV}/basic/machine_define.yml"
+    new_path = prepare_results_folder
 
-    # XXX: Please, rewrite it.
-    puts('=' * 30)
-    puts ('>>>> EVENT')
-    system("ansible-playbook -i #{$BENCH_ENV} enable_event.yml")
-    system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml")
+    %w(event worker prefork).each do |mpm_module|
+      system("ansible-playbook -i #{$BENCH_ENV} enable_#{mpm_module}.yml")
+      system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml")
 
-    last_collected = Time.now.strftime("%d-%m-%Y_%H-%M")
-    last_collected = "results/#{last_collected}_data"
-
-    event = "#{last_collected}/event"
-    system("mkdir -p #{event}")
-    system("cp /tmp/fetched/benchmark/srv/scripts/results/* #{event}")
-    system("rm -rf /tmp/fetched")
-
-    puts('=' * 30)
-    puts ('>>>> WORKER')
-    system("ansible-playbook -i #{$BENCH_ENV} enable_worker.yml")
-    system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml")
-
-    worker = "#{last_collected}/worker"
-    system("mkdir -p #{worker}")
-    system("cp /tmp/fetched/benchmark/srv/scripts/results/* #{worker}")
-    system("rm -rf /tmp/fetched")
-
-    puts('=' * 30)
-    puts ('>>>> PREFORK')
-    system("ansible-playbook -i #{$BENCH_ENV} enable_prefork.yml")
-    system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml")
-
-    prefork = "#{last_collected}/prefork"
-    system("mkdir -p #{prefork}")
-    system("cp /tmp/fetched/benchmark/srv/scripts/results/* #{prefork}")
-    system("rm -rf /tmp/fetched")
+      mpm_data_folder = File.join(new_path, mpm_module)
+      FileUtils::mkdir_p mpm_data_folder
+      FileUtils.cp_r '/tmp/fetched/benchmark/srv/scripts/results/.', mpm_data_folder
+      FileUtils.rm_rf '/tmp/fetched'
+    end
 
     exit 0
+  end
+
+  def prepare_results_folder(result_directory='results')
+    Dir.mkdir(result_directory) unless File.directory?(result_directory)
+
+    FileUtils.rm_rf '/tmp/fetched'
+    last_collected = Time.now.strftime("%d-%m-%Y_%H-%M_data")
+    Dir.mkdir(File.join(result_directory, last_collected))
+    return File.join(result_directory, last_collected)
   end
 
 end
