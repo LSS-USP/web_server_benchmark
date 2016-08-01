@@ -1,8 +1,0 @@
----
-# XXX: Please!!! Refactoring!!! I'm similar to the other mpms. 
-- name: Enable event
-  hosts: apache_web_server
-  user: root
-  become: yes
-  roles:
-    - event_mpm

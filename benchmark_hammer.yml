@@ -4,4 +4,4 @@
   user: root
   become: yes
   roles:
-    - benchmark
+    - benchmark_tools

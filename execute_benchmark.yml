@@ -4,4 +4,4 @@
   user: root
   become: yes
   roles:
-    - symphony_benchmark
+    - benchmark_handler

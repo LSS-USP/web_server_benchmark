@@ -1,0 +1,7 @@
+---
+- name: Enable "{{ mpm_name }}"
+  hosts: apache_web_server
+  user: root
+  become: yes
+  roles:
+    - "{{ mpm_role }}"

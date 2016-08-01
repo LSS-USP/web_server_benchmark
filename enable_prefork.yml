@@ -1,8 +1,0 @@
----
-# XXX: Please!!! Refactoring!!! I'm similar to the other mpms. 
-- name: Enable prefork
-  hosts: apache_web_server
-  user: root
-  become: yes
-  roles:
-    - prefork_mpm

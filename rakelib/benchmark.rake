@@ -11,7 +11,7 @@ namespace :benchmark do
     new_path = prepare_results_folder
 
     %w(event worker prefork).each do |mpm_module|
-      system("ansible-playbook -i #{$BENCH_ENV} enable_#{mpm_module}.yml")
+      system("ansible-playbook -i #{$BENCH_ENV} enable_mpm.yml --extra-vars 'mpm_name=#{mpm_module} mpm_role=#{mpm_module}_mpm'")
       system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml")
 
       mpm_data_folder = File.join(new_path, mpm_module)
