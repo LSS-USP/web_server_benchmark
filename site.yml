@@ -1,0 +1,3 @@
+---
+- include: benchmark_hammer.yml
+- include: httpd_server.yml

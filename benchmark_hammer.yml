@@ -1,0 +1,7 @@
+---
+- name: Setup Hammering benchmark environment
+  hosts: benchmark
+  user: root
+  become: yes
+  roles:
+    - benchmark

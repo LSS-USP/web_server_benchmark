@@ -15,6 +15,6 @@ end
 
 desc 'Deploy environment'
 task :deploy do
-  system("ansible-playbook -i #{$BENCH_ENV} benchmark.yml")
+  system("ansible-playbook -i #{$BENCH_ENV} site.yml")
   exit 0
 end
