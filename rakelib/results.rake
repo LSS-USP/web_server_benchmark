@@ -18,7 +18,10 @@ namespace :results do
 
   desc 'Based on tsv files, generate graphs'
   task :graphs do
-    system('./scripts/generate_graphs.sh')
+    folders = []
+
+    last = Dir.glob('results/*').max_by {|file| File.mtime(file)}
+    system("./scripts/generate_graphs.sh #{last}")
     exit 0
   end
 
