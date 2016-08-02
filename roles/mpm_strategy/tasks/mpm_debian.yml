@@ -1,5 +1,4 @@
 ---
-# XXX: Please!!! Refactoring!!! I'm similar to the other mpms. 
 - name: Turn off apache
   service: name=apache2 state=stopped
   register: apache2stopped
@@ -11,7 +10,7 @@
 
 - name: Enable event module
   when: disabledevent|success
-  shell: a2enmod mpm_worker
+  shell: a2enmod mpm_{{ mpm_name }}
   register: enabledevent
 
 - name: Started apache again

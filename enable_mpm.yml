@@ -4,4 +4,4 @@
   user: root
   become: yes
   roles:
-    - "{{ mpm_role }}"
+    - mpm_strategy
