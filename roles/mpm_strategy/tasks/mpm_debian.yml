@@ -8,7 +8,7 @@
   shell: a2dismod mpm_*
   register: disabledevent
 
-- name: Enable event module
+- name: Enable {{ mpm_name  }} module
   when: disabledevent|success
   shell: a2enmod mpm_{{ mpm_name }}
   register: enabledevent
