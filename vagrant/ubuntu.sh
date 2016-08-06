@@ -7,7 +7,7 @@ userfolder=/home/$username
 
 ### Install dependencies
 apt-get update
-apt-get -y install curl
+apt-get -y install curl python
 
 # Create an user
 useradd -m -d $userfolder $username
