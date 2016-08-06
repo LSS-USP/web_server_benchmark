@@ -1,8 +1,9 @@
 ---
-- include: mpm_debian.yml
+
+- include: debian.yml
   when: ansible_os_family == 'Debian'
   tags: httpdconfig
 
-#- include: mpm_arch.yml
-#  when: ansible_os_family == 'Archlinux'
-#  tags: httpdconfig
+- include: arch.yml
+  when: ansible_os_family == 'Archlinux'
+  tags: httpdconfig

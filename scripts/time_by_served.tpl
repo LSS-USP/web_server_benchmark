@@ -22,6 +22,6 @@ set ylabel "Served requests"
 # Ready for csv
 set datafile separator ","
 
-plot "__EVENT_FILE__" using 1:2 smooth sbezier with lines title "Event" linecolor rgb "blue", \
-"__PREFORK_FILE__" using 1:2 smooth sbezier with lines title "Prefork" linecolor rgb "red", \
-"__WORKER_FILE__" using 1:2 smooth sbezier with lines title "Worker" linecolor rgb "green"
+plot "__EVENT_FILE__" using 2:1 smooth sbezier with lines title "Event" linecolor rgb "blue", \
+"__PREFORK_FILE__" using 2:1 smooth sbezier with lines title "Prefork" linecolor rgb "red", \
+"__WORKER_FILE__" using 2:1 smooth sbezier with lines title "Worker" linecolor rgb "green"

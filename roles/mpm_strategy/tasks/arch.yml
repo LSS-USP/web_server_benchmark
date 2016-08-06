@@ -1,0 +1,26 @@
+---
+- name: Turn off httpd
+  service: name=httpd state=stopped
+  register: httpdstopped
+
+- name: Turn off current mpm module
+  when: httpdstopped|success
+  lineinfile:
+    dest=/etc/httpd/conf/httpd.conf
+    regexp='^(LoadModule mpm_.*)'
+    line='#\1'
+    backrefs=yes
+  register: disabledmpm
+
+- name: Enable {{ mpm_name }} module
+  when: disabledmpm|success
+  lineinfile:
+    dest=/etc/httpd/conf/httpd.conf
+    regexp="^(#LoadModule mpm_{{ mpm_name }}_module modules/mod_mpm_{{ mpm_name }}.so)"
+    line="LoadModule mpm_{{ mpm_name }}_module modules/mod_mpm_{{ mpm_name }}.so"
+    backrefs=yes
+  register: enablednewmpm
+
+- name: Started apache again
+  when: enablednewmpm|success
+  service: name=httpd state=started
