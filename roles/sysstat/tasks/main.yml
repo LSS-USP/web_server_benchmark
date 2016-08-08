@@ -1,0 +1,17 @@
+---
+
+- name: Install sysstat package
+  package: name=sysstat state=present
+  register: sysstatinstalled
+
+- name: Add sysstat to cron
+  when: sysstatinstalled|success
+  copy: src={{ item }} dest=/etc/cron.d
+  with_fileglob:
+    - files/sysstat
+  register: cronfile
+
+- name: Restart cron
+  when: cronfile|success
+  service: name=cron state=restarted
+

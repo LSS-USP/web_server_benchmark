@@ -7,3 +7,5 @@
     - common
     - httpd
     - static_content
+    - cron
+    - sysstat
