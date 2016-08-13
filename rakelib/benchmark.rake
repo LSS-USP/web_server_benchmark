@@ -16,8 +16,8 @@ namespace :benchmark do
 
       mpm_data_folder = File.join(new_path, mpm_module)
       FileUtils::mkdir_p mpm_data_folder
-      FileUtils.cp_r '/tmp/fetched/benchmark/srv/scripts/results/.', mpm_data_folder
-      FileUtils.rm_rf '/tmp/fetched'
+      FileUtils.copy_entry '/tmp/results/', mpm_data_folder
+      FileUtils.rm_rf '/tmp/results'
     end
 
     exit 0
@@ -26,9 +26,9 @@ namespace :benchmark do
   def prepare_results_folder(result_directory='results')
     Dir.mkdir(result_directory) unless File.directory?(result_directory)
 
-    FileUtils.rm_rf '/tmp/fetched'
+    FileUtils.rm_rf '/tmp/results'
     last_collected = Time.now.strftime("%d-%m-%Y_%H-%M_data")
-    Dir.mkdir(File.join(result_directory, last_collected))
+    FileUtils::mkdir_p File.join(result_directory, last_collected)
     return File.join(result_directory, last_collected)
   end
 

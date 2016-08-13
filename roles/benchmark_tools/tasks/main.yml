@@ -4,15 +4,8 @@
 - name: Install Apache utils
   package: name=apache2-utils
 
-- name: Create folder to keeps the benchmark scripts
-  file: path=/srv/scripts state=directory
-  register: setupfolder
-
 - name: Copy benchmark script
-  when: setupfolder|success
-  copy: src={{ item }} dest=/srv/scripts mode=0755
-  with_fileglob:
-    - scripts/*
+  synchronize: src=scripts dest=/srv/
   register: copiedscripts
 
 - name: Setup results folder
