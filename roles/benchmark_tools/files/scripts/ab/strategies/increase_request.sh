@@ -19,5 +19,6 @@ function increase_request()
     local log="$results/$hammered.log"
     local csv="$results/$hammered.csv"
     ab -n $requests -c $concurrency -g $plot -e $csv -s 50 $uri > $log 2>&1
+    sleep 5
   done
 }
