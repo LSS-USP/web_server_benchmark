@@ -24,7 +24,7 @@ function increase_request()
 }
 
 # Generate graphs from process data
-function requests_by_average_response()
+function process_data_requests_by_average_response()
 {
   basepath=$1
   base="$(dirname "$0")"
@@ -48,11 +48,17 @@ function requests_by_average_response()
       done
     done
   done
-  
-  #Second step: Generate graphics
+}
+
+function requests_by_average_response()
+{
+  basepath=$1
+  base="$(dirname "$0")"
+  local outputfolder="$basepath/graphs/requests_by_average_response/tables"
   save_to="$(dirname "$outputfolder")"
-  Rscript --vanilla scripts/r_script/average_time_per_request.R '10000' $outputfolder $save_to/xpto.png
+  Rscript --vanilla scripts/r_script/average_time_per_request.R '10000' $outputfolder $save_to
 }
 
 increase_request $1
+process_data_requests_by_average_response $1
 requests_by_average_response $1
