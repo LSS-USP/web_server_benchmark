@@ -1,5 +1,5 @@
 ---
-- name: Execute ab benchmark script (it can take a few minutes)
+- name: Execute benchmark script, small static file (it can take a few minutes)
   shell: /srv/scripts/ab/ab_stress_test.sh 'http://172.17.0.105/'
   args:
     executable: /bin/bash

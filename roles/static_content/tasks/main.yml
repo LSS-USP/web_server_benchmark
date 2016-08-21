@@ -1,5 +1,3 @@
 ---
 - name: Copy static content
-  copy: src={{ item  }} dest=/srv/http/benchmark
-  with_fileglob:
-    - files/*
+  synchronize: src=small_files/ dest=/srv/http/benchmark
