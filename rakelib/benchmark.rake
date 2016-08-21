@@ -12,9 +12,11 @@ namespace :benchmark do
 
     experiment_path = experiment_folder(new_path, 'small_static_file')
 
+    current_uri = 'http://172.17.0.105/small_files/'
+
     %w(event worker prefork).each do |mpm_module|
       system("ansible-playbook -i #{$BENCH_ENV} enable_mpm.yml --extra-vars 'mpm_name=#{mpm_module}'")
-      system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml")
+      system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml --extra-vars 'target_uri=#{current_uri}'")
 
       mpm_data_folder = File.join(experiment_path, mpm_module)
       FileUtils::mkdir_p mpm_data_folder

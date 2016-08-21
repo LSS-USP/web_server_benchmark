@@ -1,6 +1,6 @@
 ---
-- name: Execute benchmark script, small static file (it can take a few minutes)
-  shell: /srv/scripts/ab/ab_stress_test.sh 'http://172.17.0.105/'
+- name: Execute benchmark script, SMALL static file (it can take a few minutes)
+  shell: /srv/scripts/ab/ab_stress_test.sh {{ target_uri }}
   args:
     executable: /bin/bash
   register: executebenchmark
@@ -8,3 +8,4 @@
 - name: Copy results from benchmark
   when: executebenchmark|success
   synchronize: src=/srv/scripts/results dest=/tmp mode=pull
+  register: finishedstepone
