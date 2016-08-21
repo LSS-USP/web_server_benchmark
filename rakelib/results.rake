@@ -21,6 +21,9 @@ namespace :results do
     folders = []
 
     last = Dir.glob('results/*').max_by {|file| File.mtime(file)}
+
+    # Small static files
+    last = File.join(last, 'small_static_file')
     system("./scripts/generate_graphs.sh #{last}")
     exit 0
   end
