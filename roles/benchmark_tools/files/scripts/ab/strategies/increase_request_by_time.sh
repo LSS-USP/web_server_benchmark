@@ -18,11 +18,12 @@ function increase_request_by_time()
     currentfolder="$results/$requests"
     mkdir -p $currentfolder
     i=0
-    while (( i < 10 )); do
+    while (( i < 20 )); do
       local plot="$currentfolder/$i.tsv"
       local log="$currentfolder/$i.log"
       ab -n $requests -c $concurrency -g $plot -s 50 -k $uri > $log 2>&1
       i=$(( i + 1 ))
+      sleep 1
     done
   done
 }

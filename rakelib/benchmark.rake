@@ -11,20 +11,33 @@ namespace :benchmark do
     new_path = prepare_results_folder
 
     experiment_path = experiment_folder(new_path, 'small_static_file')
-
     current_uri = 'http://172.17.0.105/small_files/'
+    rate = 10000
+    execute_benchmark(experiment_path, current_uri, rate, 'SMALL static file')
 
+    experiment_path = experiment_folder(new_path, 'big_static_file')
+    current_uri = 'http://172.17.0.105/big_files/'
+    rate = 10000
+    execute_benchmark(experiment_path, current_uri, rate, 'BIG static file')
+
+    exit 0
+  end
+
+  def execute_benchmark(experiment_path, current_uri, rate, label)
     %w(event worker prefork).each do |mpm_module|
-      system("ansible-playbook -i #{$BENCH_ENV} enable_mpm.yml --extra-vars 'mpm_name=#{mpm_module}'")
-      system("ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml --extra-vars 'target_uri=#{current_uri}'")
+      mpm_strategy = "ansible-playbook -i #{$BENCH_ENV} enable_mpm.yml "\
+                "--extra-vars 'mpm_name=#{mpm_module}'"
+      system(mpm_strategy)
+
+      execute = "ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml "\
+                "--extra-vars 'target_uri=#{current_uri} label=#{label} rate=#{rate}'"
+      system(execute)
 
       mpm_data_folder = File.join(experiment_path, mpm_module)
       FileUtils::mkdir_p mpm_data_folder
       FileUtils.copy_entry '/tmp/results/', mpm_data_folder
       FileUtils.rm_rf '/tmp/results'
     end
-
-    exit 0
   end
 
   def prepare_results_folder(result_directory='results')

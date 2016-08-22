@@ -22,9 +22,14 @@ namespace :results do
 
     last = Dir.glob('results/*').max_by {|file| File.mtime(file)}
 
-    # Small static files
-    last = File.join(last, 'small_static_file')
-    system("./scripts/generate_graphs.sh #{last}")
+    # Small static data
+    small = File.join(last, 'small_static_file')
+    system("./scripts/generate_graphs.sh #{small}")
+
+    # Big static data
+    big = File.join(last, 'big_static_file')
+    system("./scripts/generate_graphs.sh #{big}")
+
     exit 0
   end
 

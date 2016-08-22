@@ -23,5 +23,5 @@ prepare_to_run
 fixed_requests_varying_concurrency $1
 # varying_requests_concurrency $1
 # keep_alive_with_fixed_requests_varying_concurrency $1
-increase_request_by_time $1 10000
-increase_request $1 10000
+increase_request_by_time $1 $2
+increase_request $1  $2

@@ -1,6 +1,6 @@
 ---
-- name: Execute benchmark script, SMALL static file (it can take a few minutes)
-  shell: /srv/scripts/ab/ab_stress_test.sh {{ target_uri }}
+- name: Execute an benchmark = {{ label }} (it can take a few minutes)
+  shell: /srv/scripts/ab/ab_stress_test.sh {{ target_uri }} {{ rate }}
   args:
     executable: /bin/bash
   register: executebenchmark
