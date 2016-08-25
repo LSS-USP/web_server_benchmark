@@ -11,8 +11,36 @@ function increase_request()
   # ATTENTION: we iterate on 'event' folder, and below we replace the name
   # this only works because we have the same filenames in all folders
   for dir in $basepath/event/increase_request/*.csv; do
-    i=$(( i+= 1 ))
-    local newfile="$outputfolder/response_time_by_request_$i.png"
+    targetname="$(basename "$dir")"
+    targetname=${targetname/.csv/''}
+
+    local newfile="$outputfolder/response_time_by_request_$targetname.png"
+
+    # Replace paths
+    event=${dir/event/event}
+    worker=${dir/event/worker}
+    prefork=${dir/event/prefork}
+    echo "Generating graphs: $i"
+    Rscript --vanilla $base/r_script/binned_data.R $newfile $event $worker $prefork
+  done
+}
+
+# Generate graphs from binned files
+function increase_request_with_keep_alive()
+{
+  basepath=$1
+  local outputfolder="$basepath/graphs/increase_request_with_keep_alive"
+  mkdir -p $outputfolder
+
+  base="$(dirname "$0")"
+
+  i=0
+  # ATTENTION: we iterate on 'event' folder, and below we replace the name
+  # this only works because we have the same filenames in all folders
+  for dir in $basepath/event/increase_request/*.csv; do
+    targetname="$(basename "$dir")"
+    targetname=${targetname/.csv/''}
+    local newfile="$outputfolder/response_time_by_request_keep_alive_$targetname.png"
 
     # Replace paths
     event=${dir/event/event}
