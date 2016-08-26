@@ -18,6 +18,23 @@ process_data <- function(target_path)
   return(table_of_mean)
 }
 
+process_csv_data <- function(target_path)
+{
+  table_of_mean <- data.frame(requests=numeric(), ttime_m=numeric())
+  var_names <- c('requests','ttime_d')
+  for (files in dir(path=target_path, pattern='*.csv',full.names=TRUE))
+  {
+    temp <- read.csv(file=files, skip=1, col.names=var_names)
+    tmp_ttime_m <- mean(temp$ttime)
+    tmp_wait_m <- mean(temp$wait)
+    newrow <- data.frame(ctime_m=tmp_ctime_m, dtime_m=tmp_dtime_m,
+                         ttime_m=tmp_ttime_m, wait_m=tmp_wait_m)
+    table_of_mean <- rbind(table_of_mean,newrow)
+  }
+
+  return(table_of_mean)
+}
+
 create_table_of_mean <- function(src_path, dest_path)
 {
   table_of_mean <- process_data(src_path)

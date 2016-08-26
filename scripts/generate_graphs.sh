@@ -1,4 +1,13 @@
+function format_target_name()
+{
+  declare -n ref=$1
+  targetname="$(basename "$ref")"
+  targetname=${targetname/.csv/''}
+  ref=$targetname
+}
+
 # Generate graphs from binned files
+# @param Expecting a base folder
 function increase_request()
 {
   basepath=$1
@@ -11,17 +20,18 @@ function increase_request()
   # ATTENTION: we iterate on 'event' folder, and below we replace the name
   # this only works because we have the same filenames in all folders
   for dir in $basepath/event/increase_request/*.csv; do
-    targetname="$(basename "$dir")"
-    targetname=${targetname/.csv/''}
+    targetname=$dir
+    format_target_name targetname
 
     local newfile="$outputfolder/response_time_by_request_$targetname.png"
 
     # Replace paths
-    event=${dir/event/event}
+    event=$dir
     worker=${dir/event/worker}
     prefork=${dir/event/prefork}
-    echo "Generating graphs: $i"
-    Rscript --vanilla $base/r_script/binned_data.R $newfile $event $worker $prefork
+    echo "Generating graphs: $newfile"
+    Rscript --vanilla $base/r_script/binned_data.R \
+                                            $newfile $event $worker $prefork
   done
 }
 
@@ -38,16 +48,17 @@ function increase_request_with_keep_alive()
   # ATTENTION: we iterate on 'event' folder, and below we replace the name
   # this only works because we have the same filenames in all folders
   for dir in $basepath/event/increase_request/*.csv; do
-    targetname="$(basename "$dir")"
-    targetname=${targetname/.csv/''}
+    targetname=$dir
+    format_target_name targetname
     local newfile="$outputfolder/response_time_by_request_keep_alive_$targetname.png"
 
     # Replace paths
-    event=${dir/event/event}
+    event=$dir
     worker=${dir/event/worker}
     prefork=${dir/event/prefork}
-    echo "Generating graphs: $i"
-    Rscript --vanilla $base/r_script/binned_data.R $newfile $event $worker $prefork
+    echo "Generating graphs: $targetname"
+    Rscript --vanilla $base/r_script/binned_data.R \
+                                            $newfile $event $worker $prefork
   done
 }
 
@@ -84,7 +95,8 @@ function requests_by_average_response()
   base="$(dirname "$0")"
   local outputfolder="$basepath/graphs/requests_by_average_response/tables"
   save_to="$(dirname "$outputfolder")"
-  Rscript --vanilla scripts/r_script/average_time_per_request.R '10000' $outputfolder $save_to
+  Rscript --vanilla scripts/r_script/average_time_per_request.R '10000' \
+                                              $outputfolder $save_to
 }
 
 increase_request $1

@@ -21,7 +21,7 @@ plot_mpm_csv_data <- function(graph_name, event, worker, prefork)
 
   limit_on_x <- max(prefork$Time, event$Time, worker$Time)
   range_x <- c(0, limit_on_x)
-  xlabel <- 'Time (ms)'
+  xlabel <- 'Average Response Time (ms)'
   ylabel <- 'Percentage'
 
   # Event
