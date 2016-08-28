@@ -10,7 +10,6 @@ function fixed_requests_varying_concurrency()
   for i in {1,10,25,50,100,300,500,1000}; do
     local plot="$results/$totalrequests""_$i.tsv"
     local csv="$results/$totalrequests""_$i.csv"
-    local log="$results/$totalrequests""_$i.log"
-    ab -n $totalrequests -c $i -g $plot -e $csv -s 50 $uri > $log 2>&1
+    ab -n $totalrequests -c $i -g $plot -e $csv -s 50 $uri > /dev/null 2>&1
   done
 }

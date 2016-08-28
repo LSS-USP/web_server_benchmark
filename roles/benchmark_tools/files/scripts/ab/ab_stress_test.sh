@@ -21,9 +21,9 @@ function prepare_to_run()
 }
 
 prepare_to_run
-fixed_requests_varying_concurrency $1
+#fixed_requests_varying_concurrency $1
 # varying_requests_concurrency $1
 # keep_alive_with_fixed_requests_varying_concurrency $1
-increase_request_by_time $1 $2
 increase_request $1 $2
-increase_request_with_keep_alive $1 $2
+#increase_request_by_time $1 $2
+#increase_request_with_keep_alive $1 $2
