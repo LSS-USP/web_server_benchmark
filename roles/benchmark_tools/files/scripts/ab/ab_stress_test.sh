@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Warm up Apache before start to work
+function warm_up()
+{
+  local uri=$1
+  local increase_by=${2:=200}
+  local concurrency=${3:=100}
+  local i=0
+
+  while (( i < 10 )); do
+    ab -n $requests -c $concurrency -s 50 $uri > /dev/null 2>&1
+    i=$(( i + 1 ))
+  done
+}
+
 currentpath=/srv/scripts
 resultspath=$currentpath/results
 totalrequests=5000
@@ -25,5 +39,4 @@ prepare_to_run
 # varying_requests_concurrency $1
 # keep_alive_with_fixed_requests_varying_concurrency $1
 increase_request $1 $2
-#increase_request_by_time $1 $2
 #increase_request_with_keep_alive $1 $2

@@ -1,19 +1,7 @@
-# Warm up Apache before start to work
-function warm_up()
-{
-  local uri=$1
-  local increase_by=${2:=200}
-  local concurrency=${3:=100}
-  local i=0
-
-  while (( i < 10 )); do
-    ab -n $requests -c $concurrency -s 50 $uri > /dev/null 2>&1
-    i=$(( i + 1 ))
-  done
-}
-
 # Function responsible to stress the application with ab.
 # @param @uri Target uri
+# @param @increase_by Increase rate to request
+# @param @concurrency Concurrency, default is 100
 function increase_request()
 {
   local uri=$1
