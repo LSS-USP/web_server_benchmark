@@ -1,0 +1,3 @@
+[lab]
+apache_web_server ansible_ssh_host=192.168.48.118 ansible_ssh_user=siqueira ansible_python_interpreter=/usr/bin/python2
+benchmark ansible_ssh_host=192.168.48.119 ansible_ssh_user=siqueira ansible_python_interpreter=/usr/bin/python2
