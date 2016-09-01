@@ -4,7 +4,7 @@
 load_csv_file <- function(path_csv)
 {
   data <- read.csv(file=path_csv, skip=1,
-                   col.names=c('Percentage','Time'))
+                   col.names=c('','Percentage','Time'))
   return(data)
 }
 
