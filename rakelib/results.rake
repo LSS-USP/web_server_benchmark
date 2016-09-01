@@ -17,18 +17,25 @@ namespace :results do
   end
 
   desc 'Based on tsv files, generate graphs'
-  task :graphs do
+  task :process do
     folders = []
 
     last = Dir.glob('results/*').max_by {|file| File.mtime(file)}
 
     # Small static data
+    puts '=' * 30
+    puts "SCENARIO: SMALL STATIC FILE"
+    puts '=' * 30
     small = File.join(last, 'small_static_file')
-    system("./scripts/generate_graphs.sh #{small}")
+    system("./data_process/ab_results.sh #{small}")
 
     # Big static data
+    puts '=' * 30
+    puts "SCENARIO: BIG STATIC FILE"
+    puts '=' * 30
+
     big = File.join(last, 'big_static_file')
-    system("./scripts/generate_graphs.sh #{big}")
+    system("./data_process/ab_results.sh #{big}")
 
     exit 0
   end
