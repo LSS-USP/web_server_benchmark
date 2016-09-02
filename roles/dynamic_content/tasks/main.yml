@@ -1,0 +1,3 @@
+---
+- name: Copy dynamic content
+  synchronize: src=files/ dest=/srv/http/benchmark

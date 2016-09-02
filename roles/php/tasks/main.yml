@@ -1,0 +1,10 @@
+---
+
+- name: Install php
+  apt: name=php update_cache=yes state=latest cache_valid_time=3600
+
+- name: Install libapache2
+  apt: name=libapache2-mod-php update_cache=yes state=latest cache_valid_time=3600
+
+- name: Install php mcrypt
+  apt: name=php-mcrypt update_cache=yes state=latest cache_valid_time=3600
