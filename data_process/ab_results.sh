@@ -22,8 +22,8 @@ function data_plots()
   local read_from=$1
   save_to=$save_base/increase_request/response_time_by_requests
   read_from=$save_base/increase_request/tables
+  response_time_by_request_graph $read_from $save_to
 
-  #response_time_by_request_graph $read_from $save_to
   save_to=$save_base/increase_request/boxplots
   read_from=$save_base/increase_request/average_tables
   requests_by_average_response $read_from $save_to

@@ -31,25 +31,29 @@ namespace :results do
     FileUtils.mkdir_p output
 
     # Small static data
-    puts '=' * 30
-    puts "SCENARIO: SMALL STATIC FILE"
-    puts '=' * 30
-    output_small = "data_processed/#{File.basename(last)}/small_static_file"
-    FileUtils.mkdir_p output_small
-    small = File.join(last, 'small_static_file')
-    system("./data_process/ab_results.sh #{small} #{output_small}")
+    process_target('SMALL_STATIC', last, 'small_static_file')
 
     # Big static data
-    puts '=' * 30
-    puts "SCENARIO: BIG STATIC FILE"
-    puts '=' * 30
+    process_target('BIG_STATIC', last, 'big_static_file')
 
-    output_big = "data_processed/#{File.basename(last)}/big_static_file"
-    FileUtils.mkdir_p output_big
-    big = File.join(last, 'big_static_file')
-    system("./data_process/ab_results.sh #{big} #{output_big}")
+    # Small dynamic data
+    process_target('SMALL_DYNAMIC', last, 'small_dynamic_file')
+
+    # Big dynamic data
+    process_target('BIG_DYNAMIC', last, 'big_dynamic_file')
 
     exit 0
+  end
+
+  def process_target(label, last, path)
+    puts '=' * 30
+    puts "SCENARIO: #{label} FILE"
+    puts '=' * 30
+
+    output_big = "data_processed/#{File.basename(last)}/#{path}"
+    FileUtils.mkdir_p output_big
+    target = File.join(last, path)
+    system("./data_process/ab_results.sh #{target} #{output_big}")
   end
 
 end
