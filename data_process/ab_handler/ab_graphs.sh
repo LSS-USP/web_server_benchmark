@@ -2,11 +2,12 @@
 # @param Expecting a base folder
 function response_time_by_request_graph()
 {
+  local basepath=$1
   local save_to=$2
 
   mkdir -p $save_to
 
-  for mpm_file in $basepath/graphs/increase_request/tables/*_event.csv; do
+  for mpm_file in $basepath/*_event.csv; do
     targetname=$mpm_file
     format_target_name targetname
     targetname=${targetname/_event/''}
@@ -25,10 +26,12 @@ function response_time_by_request_graph()
 
 function requests_by_average_response()
 {
-  basepath=$1
-  base="$(dirname "$0")"
-  local outputfolder="$basepath/graphs/requests_by_average_response/tables"
-  save_to="$(dirname "$outputfolder")"
-  Rscript --vanilla scripts/r_script/average_time_per_request.R '10000' \
-                                              $outputfolder $save_to
+  local read_from=$1
+  local save_to=$2
+  local increase_by=$3
+
+  mkdir -p $save_to
+
+  Rscript $r_scripts_path/ab_graphs_generate/average_time_per_request.R '10000' \
+                                                  $read_from $save_to
 }

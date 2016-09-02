@@ -5,8 +5,8 @@ get_data_table <- function(increase_rate, base_path, mpm)
   table_of_mean <- data.frame(requests=numeric(), average=numeric())
   for (target in axis_x)
   {
-    current_file <- paste(mpm, target, sep='_')
-    current_file <- paste(base_path,'/' ,current_file, '.csv', sep='')
+    current_file <- paste(target, mpm, sep='_')
+    current_file <- paste(base_path, '/', current_file, '.csv', sep='')
     temp_data <- read.csv(file=current_file, col.names=c('X', 'ctime_m', 'dtime_m', 'ttime_m', 'wait_m'))
     average_now <- mean(temp_data$ttime_m)
     newrow <- data.frame(requests=target, average=average_now)
@@ -50,61 +50,36 @@ plot_lines_graphs <- function(increase_rate, base_path, dest_path)
   return(0)
 }
 
+# Create boxplot of data visualization
+# @param increase_rate Increase rate to use in x axis
+# @param base_path base path to read data
+# @param dest_path path to save data
 boxplot_visualization <- function(increase_rate, base_path, dest_path)
 {
-  label_x <- seq(from=increase_rate, by=increase_rate,length.out=10)
-  i <- 1
-
+  label_x <- seq(from=increase_rate, by=increase_rate, length.out=10)
+  column <- c('NULL', 'NULL', 'NULL', NA, 'NULL')
   options(scipen=100) # FIXME: Change the expansion. Not a good idea
-  # FIXME: Please, fix me! I am sure that is a better way to do it in R. I
-  # just don't know yet.
+
   for (mpm in c('event', 'worker', 'prefork'))
   {
     output_name <- paste(mpm, 'boxplot.png', sep='_')
     current_dest_path <- paste(dest_path, '/', output_name, sep='')
     png(current_dest_path, width=1024, height=768)
-    current_file <- paste(mpm, label_x[1], sep='_')
-    current_file <- paste(base_path,'/', current_file, '.csv', sep='')
-    t1 <- read.csv(file=current_file, colClasses=c('NULL', 'NULL', 'NULL',NA,'NULL'))
 
-    current_file <- paste(mpm, label_x[2], sep='_')
-    current_file <- paste(base_path,'/', current_file, '.csv', sep='')
-    t2 <- read.csv(file=current_file, colClasses=c('NULL', 'NULL', 'NULL',NA,'NULL'))
+    boxes <- list(1:10)
 
-    current_file <- paste(mpm, label_x[3], sep='_')
-    current_file <- paste(base_path,'/', current_file, '.csv', sep='')
-    t3 <- read.csv(file=current_file, colClasses=c('NULL', 'NULL', 'NULL',NA,'NULL'))
+    for (position in 1:10)
+    {
+      current_file <- paste(label_x[position], mpm, sep='_')
+      current_file <- paste(base_path,'/', current_file, '.csv', sep='')
+      boxes[[1]][position] <- read.csv(file=current_file, colClasses=column)
+    }
 
-    current_file <- paste(mpm, label_x[4], sep='_')
-    current_file <- paste(base_path,'/', current_file, '.csv', sep='')
-    t4 <- read.csv(file=current_file, colClasses=c('NULL', 'NULL', 'NULL',NA,'NULL'))
-
-    current_file <- paste(mpm, label_x[5], sep='_')
-    current_file <- paste(base_path,'/', current_file, '.csv', sep='')
-    t5 <- read.csv(file=current_file, colClasses=c('NULL', 'NULL', 'NULL',NA,'NULL'))
-
-    current_file <- paste(mpm, label_x[6], sep='_')
-    current_file <- paste(base_path,'/', current_file, '.csv', sep='')
-    t6 <- read.csv(file=current_file, colClasses=c('NULL', 'NULL', 'NULL',NA,'NULL'))
-
-    current_file <- paste(mpm, label_x[7], sep='_')
-    current_file <- paste(base_path,'/', current_file, '.csv', sep='')
-    t7 <- read.csv(file=current_file, colClasses=c('NULL', 'NULL', 'NULL',NA,'NULL'))
-
-    current_file <- paste(mpm, label_x[8], sep='_')
-    current_file <- paste(base_path,'/', current_file, '.csv', sep='')
-    t8 <- read.csv(file=current_file, colClasses=c('NULL', 'NULL', 'NULL',NA,'NULL'))
-
-    current_file <- paste(mpm, label_x[9], sep='_')
-    current_file <- paste(base_path,'/', current_file, '.csv', sep='')
-    t9 <- read.csv(file=current_file, colClasses=c('NULL', 'NULL', 'NULL',NA,'NULL'))
-
-    current_file <- paste(mpm, label_x[10], sep='_')
-    current_file <- paste(base_path,'/', current_file, '.csv', sep='')
-    t10 <- read.csv(file=current_file, colClasses=c('NULL', 'NULL', 'NULL',NA,'NULL'))
-
-    boxplot(t1$ttime_m, t2$ttime_m, t3$ttime_m, t4$ttime_m, t5$ttime_m,
-            t6$ttime_m, t7$ttime_m, t8$ttime_m, t9$ttime_m, t10$ttime_m,
+    boxplot(boxes[[1]][[1]], boxes[[1]][[2]],
+            boxes[[1]][[3]], boxes[[1]][[4]],
+            boxes[[1]][[5]], boxes[[1]][[6]],
+            boxes[[1]][[7]], boxes[[1]][[8]],
+            boxes[[1]][[9]], boxes[[1]][[10]],
             las=2, names=label_x)
     mtext('Average time (ms)', side=2, line=3)
     mtext('Requests', side=1, line=4)
@@ -129,5 +104,5 @@ if (length(pathsArguments) < 3)
   dest_path <- pathsArguments[3]
 }
 
-plot_lines_graphs(increase_rate, target_path, dest_path)
+#plot_lines_graphs(increase_rate, target_path, dest_path)
 boxplot_visualization(increase_rate, target_path, dest_path)

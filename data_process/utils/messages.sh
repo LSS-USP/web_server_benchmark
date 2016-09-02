@@ -1,6 +1,7 @@
 BLUECOLOR="\033[1;34;49m%s\033[m\n"
 REDCOLOR="\033[1;31;49m%s\033[m\n"
 GREENCOLOR="\033[1;32;49m%s\033[m\n"
+YELLOWCOLOR="\033[1;33;49m%s\033[m\n"
 
 # Print normal message (e.g info messages). This function verifies if stdout
 # is open and print it with color, otherwise print it without color.
@@ -9,7 +10,7 @@ function say()
 {
   message="$@"
   if [ -t 1 ]; then
-    printf $GREENCOLOR "$message"
+    printf $YELLOWCOLOR "$message"
   else
     echo "$message"
   fi

@@ -66,3 +66,4 @@ local.rake
 
 # Results
 results/*
+data_processed/*

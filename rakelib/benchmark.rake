@@ -9,6 +9,9 @@ namespace :benchmark do
   desc 'Start bench'
   task :run do
     new_path = prepare_results_folder
+    last_execution = File.new('.last_execution', 'w')
+    last_execution.puts("ENV['LAST_EXECUTION'] = '#{new_path}'")
+    last_execution.close
 
     experiment_path = experiment_folder(new_path, 'small_static_file')
     current_uri = 'http://172.17.0.105/small_files/'

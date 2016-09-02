@@ -1,7 +1,10 @@
+# Calculate average response time
+# @param target_path Path with samples
 process_data <- function(target_path)
 {
   table_of_mean <- data.frame(ctime_m=numeric(), dtime_m=numeric(),
                               ttime_m=numeric(), wait_m=numeric())
+
   var_names <- c('starttime','seconds','ctime','dtime','ttime','wait')
   for (files in dir(path=target_path, pattern='*.tsv',full.names=TRUE))
   {
@@ -12,24 +15,7 @@ process_data <- function(target_path)
     tmp_wait_m <- mean(temp$wait)
     newrow <- data.frame(ctime_m=tmp_ctime_m, dtime_m=tmp_dtime_m,
                          ttime_m=tmp_ttime_m, wait_m=tmp_wait_m)
-    table_of_mean <- rbind(table_of_mean,newrow)
-  }
-
-  return(table_of_mean)
-}
-
-process_csv_data <- function(target_path)
-{
-  table_of_mean <- data.frame(requests=numeric(), ttime_m=numeric())
-  var_names <- c('requests','ttime_d')
-  for (files in dir(path=target_path, pattern='*.csv',full.names=TRUE))
-  {
-    temp <- read.csv(file=files, skip=1, col.names=var_names)
-    tmp_ttime_m <- mean(temp$ttime)
-    tmp_wait_m <- mean(temp$wait)
-    newrow <- data.frame(ctime_m=tmp_ctime_m, dtime_m=tmp_dtime_m,
-                         ttime_m=tmp_ttime_m, wait_m=tmp_wait_m)
-    table_of_mean <- rbind(table_of_mean,newrow)
+    table_of_mean <- rbind(table_of_mean, newrow)
   }
 
   return(table_of_mean)
