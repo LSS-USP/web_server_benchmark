@@ -7,11 +7,13 @@ function increase_request()
   local uri=$1
   local increase_by=$2
   local concurrency=$3
-  local results="$resultspath/increase_request"
+  local select=$4
+  local results=$5
 
   increase_by=${increase_by:=200}
   concurrency=${concurrency:=100}
-  # TODO: Add a increase_by verification, it should be bigger than concurrency
+  select=${select:='simple'}
+  results=${results:="$resultspath/increase_request"}
 
   mkdir -p $results
 
@@ -19,7 +21,7 @@ function increase_request()
   warm_up $uri $increase_by $concurrency
 
   # Hammering Apache!
-  for (( hammered=1; hammered <= 10; hammered++ )); do
+  for (( hammered=1; hammered <= INCREASE_BY; hammered++ )); do
 
     local requests=$(( hammered * increase_by ))
 
@@ -29,10 +31,10 @@ function increase_request()
 
     # 30 samples for each test
     local samples=0
-    while (( samples < 30 )); do
+    while (( samples < TOTAL_OF_SAMPLES )); do
       local plot="$currentfolder/$samples.tsv"
       local csv="$currentfolder/$samples.csv"
-      ab -n $requests -c $concurrency -g $plot -e $csv -s 50 $uri > /dev/null 2>&1
+      select_ab_strategies $select $requests $concurrency $plot $csv $uri
       samples=$(( samples + 1 ))
     done
   done
