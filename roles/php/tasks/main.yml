@@ -1,10 +1,23 @@
 ---
+- name: Turn off apache
+  service: name=apache2 state=stopped
 
-- name: Install php
+- name: Install PHP-FPM
+  apt: name=php-fpm update_cache=yes state=latest cache_valid_time=3600
+
+- name: Install PHP
   apt: name=php update_cache=yes state=latest cache_valid_time=3600
 
-- name: Install libapache2
-  apt: name=libapache2-mod-php update_cache=yes state=latest cache_valid_time=3600
+- name: Install libapache2-mod-fastcgi
+  apt: name=libapache2-mod-fastcgi update_cache=yes state=latest cache_valid_time=3600
 
-- name: Install php mcrypt
+- name: Install PHP mcrypt
   apt: name=php-mcrypt update_cache=yes state=latest cache_valid_time=3600
+
+- name: Enable actions, fastcgi, and alias module
+  shell: a2enmod actions fastcgi alias
+  register: enabledmodules
+
+- name: Started apache again
+  when: enabledmodules|success
+  service: name=apache2 state=started
