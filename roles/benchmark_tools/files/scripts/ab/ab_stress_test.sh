@@ -27,6 +27,7 @@ function strategies_varying_requests()
   local uri=$1
   local increase_by=$2
   local save_to=$resultspath/increase_request
+
   increase_request $uri $increase_by 100 'simple' $save_to
 
   save_to=$resultspath/increase_request_keep_alive

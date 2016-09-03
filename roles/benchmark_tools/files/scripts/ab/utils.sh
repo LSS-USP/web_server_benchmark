@@ -29,11 +29,14 @@ function select_ab_strategies()
 function warm_up()
 {
   local uri=$1
-  local increase_by=${2:=200}
-  local concurrency=${3:=100}
-  local i=0
+  local increase_by=$2
+  local concurrency=$3
+  local i=1
+  increase_by=${increase_by:=200}
+  concurrency=${concurrency:=100}
 
-  while (( i < 10 )); do
+  while (( i < 11 )); do
+    local requests=$(( i * increase_by ))
     ab -n $requests -c $concurrency -s 50 $uri > /dev/null 2>&1
     i=$(( i + 1 ))
   done

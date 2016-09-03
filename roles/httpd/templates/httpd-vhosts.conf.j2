@@ -32,5 +32,11 @@
       Allow from all
       Require all granted
     </Directory>
+    <IfModule mod_fastcgi.c>
+      AddHandler php7-fcgi .php
+      Action php7-fcgi /php7-fcgi virtual
+      Alias /php7-fcgi /usr/lib/cgi-bin/php7-fcgi
+      FastCgiExternalServer /usr/lib/cgi-bin/php7-fcgi -socket /var/run/php/php7.0-fpm.sock -pass-header Authorization
+    </IfModule>
 </VirtualHost>
 

@@ -15,7 +15,7 @@
   apt: name=php-mcrypt update_cache=yes state=latest cache_valid_time=3600
 
 - name: Enable actions, fastcgi, and alias module
-  shell: a2enmod actions fastcgi alias
+  shell: a2enmod actions fastcgi alias proxy proxy_http proxy_fcgi
   register: enabledmodules
 
 - name: Started apache again
