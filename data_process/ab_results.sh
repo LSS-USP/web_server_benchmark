@@ -20,12 +20,23 @@ function data_plots()
 {
   local save_base=$1
   local read_from=$1
-  save_to=$save_base/increase_request/response_time_by_requests
-  read_from=$save_base/increase_request/tables
-  response_time_by_request_graph $read_from $save_to
+
+  ## INCREASE REQUEST
+ # save_to=$save_base/increase_request/response_time_by_requests
+ # read_from=$save_base/increase_request/tables
+ # response_time_by_request_graph $read_from $save_to
 
   save_to=$save_base/increase_request/boxplots
   read_from=$save_base/increase_request/average_tables
+  requests_by_average_response $read_from $save_to
+
+ # ## INCREASE REQUEST WITH KEEP ALIVE
+ # save_to=$save_base/increase_request_keep_alive/response_time_by_requests
+ # read_from=$save_base/increase_request_keep_alive/tables
+ # response_time_by_request_graph $read_from $save_to
+
+  save_to=$save_base/increase_request_keep_alive/boxplots
+  read_from=$save_base/increase_request_keep_alive/average_tables
   requests_by_average_response $read_from $save_to
 }
 
@@ -33,6 +44,7 @@ function process_data()
 {
   local save_base=$2
 
+  ## INCREASE REQUEST
   # Find median value
   local save_to="$save_base/increase_request/tables"
   process_sample_data $1 $save_to 'median'
@@ -40,13 +52,21 @@ function process_data()
   # Find average values
   save_to="$save_base/increase_request/average_tables"
   process_sample_data $1 $save_to 'average'
+
+  ## INCREASE REQUEST WITH KEEP ALIVE
+  local save_to="$save_base/increase_request_keep_alive/tables"
+  process_sample_data $1 $save_to 'median'
+
+  # Find average values
+  save_to="$save_base/increase_request_keep_alive/average_tables"
+  process_sample_data $1 $save_to 'average'
 }
 
 function main()
 {
   save_base=$2
   local read_from=$save_to
-  #process_data $1 $2
+  process_data $1 $2
   data_plots $2
 }
 

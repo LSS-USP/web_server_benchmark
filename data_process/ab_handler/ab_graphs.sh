@@ -24,6 +24,26 @@ function response_time_by_request_graph()
   done
 }
 
+function find_increase_rate()
+{
+  declare -n rate=$1
+  local read_from=$2
+  local i=0
+  local first=0
+  local second=0
+  for entry in "$read_from"/*_event.csv; do
+    first="$(basename "$entry")"
+    first="${first/_event.csv/''}"
+    if [ $i  -eq 2 ]; then
+      break
+    fi
+    i=$(( i + 1 ))
+    second=$first
+  done
+
+  rate=$(( first - second ))
+}
+
 function requests_by_average_response()
 {
   local read_from=$1
@@ -32,6 +52,12 @@ function requests_by_average_response()
 
   mkdir -p $save_to
 
-  Rscript $r_scripts_path/ab_graphs_generate/average_time_per_request.R '10000' \
+  # Find increase rate
+  echo $read_from
+  echo $save_to
+
+  find_increase_rate rate $read_from
+
+  Rscript $r_scripts_path/ab_graphs_generate/average_time_per_request.R $rate \
                                                   $read_from $save_to
 }
