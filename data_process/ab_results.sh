@@ -22,18 +22,18 @@ function data_plots()
   local read_from=$1
 
   ## INCREASE REQUEST
- # save_to=$save_base/increase_request/response_time_by_requests
- # read_from=$save_base/increase_request/tables
- # response_time_by_request_graph $read_from $save_to
+  save_to=$save_base/increase_request/response_time_by_requests
+  read_from=$save_base/increase_request/tables
+  response_time_by_request_graph $read_from $save_to
 
   save_to=$save_base/increase_request/boxplots
   read_from=$save_base/increase_request/average_tables
   requests_by_average_response $read_from $save_to
 
- # ## INCREASE REQUEST WITH KEEP ALIVE
- # save_to=$save_base/increase_request_keep_alive/response_time_by_requests
- # read_from=$save_base/increase_request_keep_alive/tables
- # response_time_by_request_graph $read_from $save_to
+  ## INCREASE REQUEST WITH KEEP ALIVE
+  save_to=$save_base/increase_request_keep_alive/response_time_by_requests
+  read_from=$save_base/increase_request_keep_alive/tables
+  response_time_by_request_graph $read_from $save_to
 
   save_to=$save_base/increase_request_keep_alive/boxplots
   read_from=$save_base/increase_request_keep_alive/average_tables
