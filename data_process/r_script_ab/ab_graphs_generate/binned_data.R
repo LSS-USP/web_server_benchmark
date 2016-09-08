@@ -26,23 +26,20 @@ plot_mpm_csv_data <- function(graph_name, event, worker, prefork)
 
   # Event
   plot(event$Time, event$Percentage, type='l', col='blue',
-        ylab=ylabel, xlab=xlabel,
-        xlim=range_x)
-  # Lines
-  points(max(event$Time), max(event$Percentage) , pch=3)
+        ylab=ylabel, xlab=xlabel, xlim=range_x, cex.lab=1.5, lwd=2)
+  points(max(event$Time), max(event$Percentage) , pch=3, lwd=2)
 
   # Worker
-  lines(worker$Time, worker$Percentage, type='l', col='green')
-  points(max(worker$Time), max(worker$Percentage) , pch=3)
+  lines(worker$Time, worker$Percentage, type='l', col='green', lwd=2)
+  points(max(worker$Time), max(worker$Percentage) , pch=3, lwd=2)
 
   # Prefork
-  lines(prefork$Time, prefork$Percentage, type='l', col='red')
-  points(max(worker$Time), max(worker$Percentage) , pch=3)
+  lines(prefork$Time, prefork$Percentage, type='l', col='red', lwd=2)
+  points(max(prefork$Time), max(prefork$Percentage), pch=3)
 
   # Legend
   legend('topright', inset=c(-0.15,0), legend=c('Event','Prefork','worker'),
          lty=c(1,1,1), lwd=c(2.5,2.5,2.5), col=c('blue','red', 'green'))
-  points(max(prefork$Time), max(prefork$Percentage) , pch=3)
   dev.off()
   return(0)
 }
