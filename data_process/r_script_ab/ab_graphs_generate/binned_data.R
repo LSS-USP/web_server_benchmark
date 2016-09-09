@@ -15,7 +15,7 @@ load_csv_file <- function(path_csv)
 # @param prefork Expect data.frame as a parameter with prefork data.
 plot_mpm_csv_data <- function(graph_name, event, worker, prefork)
 {
-  margin <- c(5.1, 4.1, 2, 9.1)
+  margin <- c(5.1, 5.1, 2, 9.1)
   png(graph_name, width=1024, height=768)
   par(mar=margin, xpd=TRUE)
 
@@ -26,7 +26,8 @@ plot_mpm_csv_data <- function(graph_name, event, worker, prefork)
 
   # Event
   plot(event$Time, event$Percentage, type='l', col='blue',
-        ylab=ylabel, xlab=xlabel, xlim=range_x, cex.lab=1.5, lwd=2)
+        ylab=ylabel, xlab=xlabel, xlim=range_x, cex.lab=1.5, lwd=2,
+        cex.axis=1.5, cex.main=1.5)
   points(max(event$Time), max(event$Percentage) , pch=3, lwd=2)
 
   # Worker
@@ -35,7 +36,7 @@ plot_mpm_csv_data <- function(graph_name, event, worker, prefork)
 
   # Prefork
   lines(prefork$Time, prefork$Percentage, type='l', col='red', lwd=2)
-  points(max(prefork$Time), max(prefork$Percentage), pch=3)
+  points(max(prefork$Time), max(prefork$Percentage), pch=3, lwd=2)
 
   # Legend
   legend('topright', inset=c(-0.15,0), legend=c('Event','Prefork','worker'),

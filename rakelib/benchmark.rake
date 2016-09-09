@@ -26,12 +26,12 @@ namespace :benchmark do
     # Dynamic files
     experiment_path = experiment_folder(new_path, 'small_dynamic_file')
     current_uri = 'http://172.17.0.105/small_dynamic/'
-    rate = 100
+    rate = 1000
     execute_benchmark(experiment_path, current_uri, rate, 'SMALL_dynamic file')
 
     experiment_path = experiment_folder(new_path, 'big_dynamic_file')
     current_uri = 'http://172.17.0.105/big_dynamic/'
-    rate = 100
+    rate = 1000
     execute_benchmark(experiment_path, current_uri, rate, 'BIG_dynamic file')
 
     exit 0
