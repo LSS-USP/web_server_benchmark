@@ -67,3 +67,9 @@ local.rake
 # Results
 results/*
 data_processed/*
+
+# Gz
+*.gz
+
+# 
+.last_execution
