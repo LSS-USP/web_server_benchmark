@@ -7,7 +7,6 @@
     - common
     - httpd
     - static_content
-    - cron
-    - sysstat
     - php
     - dynamic_content
+    - flextrace

@@ -4,3 +4,6 @@
 
 - name: Install vim
   package: name=vim state=present
+
+- name: Install git
+  package: name=git state=present

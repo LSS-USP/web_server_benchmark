@@ -1,0 +1,15 @@
+---
+- name: Install required packages
+  apt: name=collectl update_cache=yes state=latest cache_valid_time=3600
+  register: installcollectl
+
+- name: Clone flextrace
+  git: repo=https://github.com/rodrigosiqueira/flextrace.git
+       dest=/srv/flextrace/
+  when: installcollectl
+  register: cloneflextrace
+
+- name: Setup flextrace config file
+  synchronize: src=files/flextrace.conf dest=/srv/flextrace/config
+  when: cloneflextrace
+  register: setupflextrace
