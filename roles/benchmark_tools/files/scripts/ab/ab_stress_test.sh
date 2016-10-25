@@ -5,7 +5,7 @@ declare -r INCREASE_BY=10
 
 currentpath=/srv/scripts
 resultspath=$currentpath/results
-totalrequests=5000
+totalrequests=1000
 
 base="$(dirname "$0")"
 
@@ -30,8 +30,8 @@ function strategies_varying_requests()
 
   increase_request $uri $increase_by 100 'simple' $save_to
 
-  save_to=$resultspath/increase_request_keep_alive
-  increase_request $uri $increase_by 100 'withkeepalive' $save_to
+ # save_to=$resultspath/increase_request_keep_alive
+ # increase_request $uri $increase_by 100 'withkeepalive' $save_to
 }
 
 prepare_to_run
