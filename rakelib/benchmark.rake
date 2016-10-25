@@ -40,12 +40,20 @@ namespace :benchmark do
   def execute_benchmark(experiment_path, current_uri, rate, label)
     %w(event worker prefork).each do |mpm_module|
       mpm_strategy = "ansible-playbook -i #{$BENCH_ENV} enable_mpm.yml "\
-                "--extra-vars 'mpm_name=#{mpm_module}'"
+                      "--extra-vars 'mpm_name=#{mpm_module}'"
       system(mpm_strategy)
+
+      flextrace = "ansible-playbook -i #{$BENCH_ENV} monitor.yml "\
+                  "--extra-vars 'monitor=Start'"
+      system(flextrace)
 
       execute = "ansible-playbook -i #{$BENCH_ENV} execute_benchmark.yml "\
                 "--extra-vars 'target_uri=#{current_uri} label=#{label} rate=#{rate}'"
       system(execute)
+
+      flextrace = "ansible-playbook -i #{$BENCH_ENV} monitor.yml "\
+                  "--extra-vars 'monitor=Stop'"
+      system(flextrace)
 
       mpm_data_folder = File.join(experiment_path, mpm_module)
       FileUtils::mkdir_p mpm_data_folder

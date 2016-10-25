@@ -6,6 +6,7 @@
 - name: Clone flextrace
   git: repo=https://github.com/rodrigosiqueira/flextrace.git
        dest=/srv/flextrace/
+       force=yes
   when: installcollectl
   register: cloneflextrace
 

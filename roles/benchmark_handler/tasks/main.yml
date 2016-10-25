@@ -5,7 +5,7 @@
     executable: /bin/bash
   register: executebenchmark
 
-- name: Copy results from benchmark
+- name: copy results from benchmark
   when: executebenchmark|success
   synchronize: src=/srv/scripts/results dest=/tmp mode=pull
   register: finishedstepone
