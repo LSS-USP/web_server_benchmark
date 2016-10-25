@@ -1,0 +1,8 @@
+---
+- name: Verify if it is start
+  include: start_monitoring.yml
+  when: monitor == "Start"
+
+- name: Verify if it is stop
+  include: stop_monitoring.yml
+  when: monitor == "Stop"

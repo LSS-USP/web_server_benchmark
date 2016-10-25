@@ -1,0 +1,11 @@
+---
+- name: Stop hardware information collect
+  when: finishedstepone|success
+  shell: /srv/flextrace/flextrace.sh -f
+  args:
+    executable: /bin/bash
+  register: stophwcollect
+
+- name: copy hardware information
+  when: stophwcollect|success
+  synchronize: src=/srv/flextrace/*.gz dest=/tmp/ mode=pull

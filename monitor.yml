@@ -1,0 +1,7 @@
+---
+- name: Cpu and memory monitoring - "{{ monitor }}"
+  hosts: apache_web_server
+  user: root
+  become: yes
+  roles:
+    - hardware_monitoring

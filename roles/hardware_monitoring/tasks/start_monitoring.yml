@@ -1,0 +1,19 @@
+---
+- name: Verify if flextrace still collecting
+  shell: /srv/flextrace/flextrace.sh -f
+  args:
+    executable: /bin/bash
+  register: stopanycollect
+
+- name: Clean old log files
+  when: stopanycollect
+  shell: if [ -f /srv/flextrace/stress_data*.cpu.gz ] && [ -f /srv/flextrace/stress_data*.numa.gz ] ; then mv /srv/flextrace/*.gz /tmp; else echo 0; fi
+  args:
+    executable: /bin/bash
+  register: cleanlogs
+
+- name: Start data collect
+  when: cleanlogs|success
+  shell: /srv/flextrace/flextrace.sh -c &
+  args:
+    executable: /bin/bash
