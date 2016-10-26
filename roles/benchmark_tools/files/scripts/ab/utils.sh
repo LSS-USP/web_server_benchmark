@@ -1,15 +1,16 @@
-# Select a specific R script to execute
+# Copyright (C) 2016 Rodrigo Siqueira
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 3 as
+# published by the Free Software Foundation.
+
 function select_ab_strategies()
 {
-  local option=$1
+  local uri=$1
   local requests=$2
   local concurrency=$3
-  local plot=$4
-  local csv=$5
-  local uri=$6
-
-  concurrency=${concurrency:=200}
-  requests=${requests:=100}
+  local option=$4
+  local plot=$5
+  local csv=$6
 
   case $option in
     simple)
@@ -17,6 +18,9 @@ function select_ab_strategies()
       ;;
     withkeepalive)
       ab -n $requests -c $concurrency -g $plot -e $csv -s 50 -k $uri > /dev/null 2>&1
+      ;;
+    warmup)
+      ab -n $requests -c $concurrency -s 50 $uri > /dev/null 2>&1
       ;;
     *)
       complain 'Running default'
@@ -31,13 +35,11 @@ function warm_up()
   local uri=$1
   local increase_by=$2
   local concurrency=$3
-  local i=1
   increase_by=${increase_by:=200}
   concurrency=${concurrency:=100}
 
-  while (( i < 11 )); do
-    local requests=$(( i * increase_by ))
-    ab -n $requests -c $concurrency -s 50 $uri > /dev/null 2>&1
-    i=$(( i + 1 ))
+  for (( warmup=1; warmup <= 10; warmup++ )); do
+    local requests=$(( warmup * increase_by ))
+    select_ab_strategies $uri $requests $concurrency 'warmup' $plot $csv
   done
 }
