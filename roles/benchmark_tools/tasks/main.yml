@@ -4,10 +4,12 @@
 - name: Install Apache utils
   package: name=apache2-utils
 
-- name: Copy benchmark script
-  synchronize: src=scripts dest=/srv/
-  register: copiedscripts
+- name: Clone Stress scripts
+  git: repo=https://github.com/LSS-USP/stress_scripts_web_server.git
+       dest=/srv/scripts/ab/
+       force=yes
+  register: clonestressscripts
 
 - name: Setup results folder
-  when: copiedscripts|success
+  when: clonestressscripts|success
   file: path=/srv/scripts/results state=directory mode=0755
