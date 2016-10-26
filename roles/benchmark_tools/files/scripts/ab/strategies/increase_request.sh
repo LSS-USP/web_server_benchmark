@@ -5,12 +5,12 @@
 function increase_request()
 {
   local uri=$1
-  local increase_by=$2
+  local INCREASE_BY=$2
   local concurrency=$3
   local select=$4
   local results=$5
 
-  increase_by=${increase_by:=200}
+  INCREASE_BY=${INCREASE_BY:=200}
   concurrency=${concurrency:=100}
   select=${select:='simple'}
   results=${results:="$resultspath/increase_request"}
@@ -18,7 +18,7 @@ function increase_request()
   mkdir -p $results
 
   # Start warm up
-  warm_up $uri $increase_by $concurrency
+  warm_up $uri $INCREASE_BY $concurrency
 
   # Hammering Apache!
   for (( hammered=1; hammered <= INCREASE_BY; hammered++ )); do

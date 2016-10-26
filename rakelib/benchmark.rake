@@ -58,6 +58,8 @@ namespace :benchmark do
       mpm_data_folder = File.join(experiment_path, mpm_module)
       FileUtils::mkdir_p mpm_data_folder
       FileUtils.copy_entry '/tmp/results/', mpm_data_folder
+      Dir.glob('/tmp/stress*.gz') {|f| FileUtils.cp File.expand_path(f), mpm_data_folder}
+      Dir.glob('/tmp/stress*.gz') {|f| FileUtils.rm_rf File.expand_path(f)}
       FileUtils.rm_rf '/tmp/results'
     end
   end

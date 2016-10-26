@@ -1,6 +1,5 @@
 ---
 - name: Stop hardware information collect
-  when: finishedstepone|success
   shell: /srv/flextrace/flextrace.sh -f
   args:
     executable: /bin/bash
