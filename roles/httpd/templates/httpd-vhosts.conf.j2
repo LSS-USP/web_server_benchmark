@@ -25,12 +25,15 @@
     DocumentRoot "/srv/http/benchmark"
     ServerName benchmark-lss.com
     ServerAlias www.benchmark-lss.com
-    ErrorLog {{ item }}
-    CustomLog {{ item }} common
+    ErrorLog {{ item }}error_log
+    CustomLog {{ item }}general common
     <Directory "/srv/http/benchmark">
       Order allow,deny
       Allow from all
       Require all granted
+      AddHandler mod_python .py
+      PythonHandler mod_python.publisher
+      PythonDebug On
     </Directory>
     <IfModule mod_fastcgi.c>
       AddHandler php7-fcgi .php
