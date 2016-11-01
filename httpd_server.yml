@@ -8,5 +8,6 @@
     - httpd
     - static_content
     - php
+    - python
     - dynamic_content
     - flextrace
