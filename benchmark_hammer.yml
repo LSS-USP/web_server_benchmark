@@ -5,3 +5,4 @@
   become: yes
   roles:
     - benchmark_tools
+    - increase_filedescriptor
