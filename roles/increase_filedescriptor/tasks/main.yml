@@ -1,0 +1,18 @@
+---
+- name: Increase filedescriptor limits
+  lineinfile: dest=/etc/security/limits.conf line={{ item }} state=present
+  with_items:
+    - "* soft nofile 1048576"
+    - "* hard nofile 1048576"
+    - "root soft nofile 1048576"
+    - "root hard nofile 1048576"
+    - "* soft memlock unlimited"
+    - "* hard memlock unlimited"
+
+- name: Increase inotify and memory limits
+  sysctl: name={{ item[0] }} value={{ item[1] }} state=present sysctl_file=/etc/sysctl.d/70-limits.conf reload=yes
+  with_together:
+    - [ 'fs.inotify.max_queued_events', 'fs.inotify.max_user_instances', 'fs.inotify.max_user_watches', 'vm.max_map_count' ]
+    - [ 1048576, 1048576, 1048576, 262144 ]
+
+
