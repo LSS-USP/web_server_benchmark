@@ -33,5 +33,16 @@
   shell: a2dissite 000-default.conf
   register: disabledvirtualhost
 
+- name: Turn off current mpm module
+  when: disabledvirtualhost|success
+  shell: a2dismod mpm_*
+  register: disabledevent
+
+- name: Enable event module
+  when: disabledevent|success
+  shell: a2enmod mpm_event
+  register: enabledevent
+
 - name: Restart apache2 to capture the new configuration
+  when: enabledevent|success
   service: name=apache2 state=restarted
