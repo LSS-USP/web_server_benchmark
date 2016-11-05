@@ -1,45 +1,55 @@
 # What is web server benchmark?
 
-> In a few word, this repository keeps an automated benchmark for web servers
+----
+
+> In a few words, this repository keeps an automated benchmark for web servers
 (specially Apache httpd).
 
-> Personally, I do not trust most of the benchmarks that I have seen in the
-Internet, since many of them don't clearly state what kind of configuration and
-environment was used in their tests. By this reason, I decided to create my own
-set up benchmark with focus on reproducibility of the data.
+> Personally, I do not trust in most of the web server benchmarks that I have
+seen on the Internet. Why? Many of them don't clearly state what kind of
+configuration and environment was used in their tests. By this reason, I
+decided to create my own test environment with focus on the reproducibility of
+the data and honesty with results.
 
-> With this in mind, I focused in three things:
+> With this in mind, I focused on three things:
 
-* __Reproducibility__: I want to be able to provide a structure which I and
-everybody can easily reproduce the results;
-* __Scalability__: I need a structure which I can deploy locally in a set of
+* __Reproducibility__: Provide a structure which everybody can easily reproduce
+the results;
+* __Scalability__: Structure which everybody can deploy locally in a set of
 virtual machine (development environment), or in a bunch of computers, or even
-in any servers that I want to deploy;
-* __Extensible__: I need a structure which I can add features and behaviours
-easily. As an example, should be easy to change the sample applications served
-by httpd. Additionally, ought to be simple to change the stress script used by
-the benchmark.
+in any servers in anywhere;
+* __Extensible__: Something easy to add features and behaviours.
+
+## Structure overview
+
+<img src="https://raw.githubusercontent.com/wiki/LSS-USP/web_server_benchmark/structure.png" alt="Kuniri" align="left" />
+> Basically, this benchmark uses two host machines: one for Apache Httpd and
+another that fired thousands of requests. The machine that host the Httpd has a
+lot of specific configuration and some specific mpm strategies defined. The
+second machine its design to 'hammering' the Httpd web server. Finally, you can
+handle all of it from your computer using some tasks (explained in the section
+below).
 
 # Usage
 
 ## Dependencies
 
 * Python 2
-* Gnuplot
+* R
 * Ansible 2.1
 * Rake 11.1
 
-## Running inside virtual machines
+## Development environment
 
-> To make easy to reproduce this benchmark, we have the option to run it inside
-a virtual machine. This setting relies in some additional softwares, that you
-have to install. First of all, you have to install:
+> To make easy to reproduce try this benchmark or adapt it, we have the option
+to run it inside a virtual machine. This setting relies in some additional
+softwares, that you have to install. First of all, you have to install:
 
 * Virtualbox 5
 * Vagrant 1.8
 
-> If you not have a public key, generate an SSH key. Copy your id_rsa.pub
-inside the /vagrant folder.
+> Secondly, you need to configure your public key. If you not have a public
+key, generate an SSH key. Copy your id_rsa.pub inside /vagrant folder.
 
 ```
 cp ~/.ssh/id_rsa.pub /vagrant
