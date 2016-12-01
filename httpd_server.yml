@@ -11,3 +11,4 @@
     - python
     - dynamic_content
     - flextrace
+    - mpm_configuration
