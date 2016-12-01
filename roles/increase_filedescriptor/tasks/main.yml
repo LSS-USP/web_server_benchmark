@@ -13,6 +13,4 @@
   sysctl: name={{ item[0] }} value={{ item[1] }} state=present sysctl_file=/etc/sysctl.d/70-limits.conf reload=yes
   with_together:
     - [ 'fs.inotify.max_queued_events', 'fs.inotify.max_user_instances', 'fs.inotify.max_user_watches', 'vm.max_map_count', 'net.ipv4.tcp_max_syn_backlog', 'net.ipv4.tcp_syncookies']
-    - [ 1048576, 1048576, 1048576, 262144, 4096, 0 ]
-
-
+    - [ 1048576, 1048576, 1048576, 262144, 8096, 0 ]
